@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Builder Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .item-row:hover .remove-item {
+            opacity: 1;
+        }
+
+        #invoicePreview {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div class="mb-4 md:mb-0">
+                <h1 class="text-3xl font-bold text-gray-800">Invoice Builder Pro</h1>
+                <p class="text-gray-600">Create professional invoices in minutes</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/904cbf9f-6608-42a5-ba64-4b5b2d3eea19.png"
+                    alt="Modern minimalist logo for Invoice Builder with clean typography on light blue background"
+                    class="h-10">
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Form Section -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-6 no-print">
+                <!-- Company Information -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Company Information</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="companyName" class="block text-sm font-medium text-gray-700 mb-1">Company
+                                Name</label>
+                            <input type="text" id="companyName"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value="Your Company Name">
+                        </div>
+                        <div>
+                            <label for="companyAddress" class="block text-sm font-medium text-gray-700 mb-1">Company
+                                Address</label>
+                            <textarea id="companyAddress" rows="2"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">123 Business Street\nCity, State ZIP</textarea>
+                        </div>
+                        <div>
+                            <label for="companyEmail" class="block text-sm font-medium text-gray-700 mb-1">Company
+                                Email</label>
+                            <input type="email" id="companyEmail"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value="info@yourcompany.com">
+                        </div>
+                        <div>
+                            <label for="companyPhone" class="block text-sm font-medium text-gray-700 mb-1">Company
+                                Phone</label>
+                            <input type="tel" id="companyPhone"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value="(123) 456-7890">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client Information -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Client Information</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="clientName" class="block text-sm font-medium text-gray-700 mb-1">Client
+                                Name</label>
+                            <input type="text" id="clientName"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="clientEmail" class="block text-sm font-medium text-gray-700 mb-1">Client
+                                Email</label>
+                            <input type="email" id="clientEmail"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="clientAddress" class="block text-sm font-medium text-gray-700 mb-1">Client
+                                Address</label>
+                            <textarea id="clientAddress" rows="2"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        <div>
+                            <label for="clientPhone" class="block text-sm font-medium text-gray-700 mb-1">Client
+                                Phone</label>
+                            <input type="tel" id="clientPhone"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invoice Details -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Invoice Details</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="invoiceNumber" class="block text-sm font-medium text-gray-700 mb-1">Invoice
+                                #</label>
+                            <input type="text" id="invoiceNumber"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="invoiceDate" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                            <input type="date" id="invoiceDate"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="dueDate" class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+                            <input type="date" id="dueDate"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invoice Items -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Invoice Items</h2>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Description</th>
+                                    <th scope="col"
+                                        class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Quantity</th>
+                                    <th scope="col"
+                                        class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Rate</th>
+                                    <th scope="col"
+                                        class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Amount</th>
+                                    <th scope="col"
+                                        class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoiceItems" class="bg-white divide-y divide-gray-200">
+                                <!-- Items will be added here dynamically -->
+                            </tbody>
+                        </table>
+                        <button id="addItemBtn"
+                            class="mt-4 px-4 py-2 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors">
+                            + Add Item
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notes & Terms -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Notes & Terms</h2>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                            <textarea id="notes" rows="2"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Additional notes to include in the invoice"></textarea>
+                        </div>
+                        <div>
+                            <label for="terms" class="block text-sm font-medium text-gray-700 mb-1">Terms &
+                                Conditions</label>
+                            <textarea id="terms" rows="2"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Payment terms, late fees, etc."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap gap-3">
+                    <button id="generatePreviewBtn"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                        Generate Preview
+                    </button>
+                    <button id="clearFormBtn"
+                        class="px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors">
+                        Clear Form
+                    </button>
+                    <button id="saveTemplateBtn"
+                        class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                        Save Template
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="lg:col-span-1">
+                <div class="sticky top-8">
+                    <div class="bg-white rounded-lg shadow-sm p-6" id="invoicePreview">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-gray-800">INVOICE PREVIEW</h2>
+                            <span id="previewInvoiceNumber" class="text-gray-600">#INV-0001</span>
+                        </div>
+
+                        <div class="flex justify-between mb-8">
+                            <div>
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1bf762a4-dab1-4442-8560-0153b7377e2d.png"
+                                    alt="Company logo for invoice with professional typography and color scheme"
+                                    class="h-10 mb-2">
+                                <p class="text-sm text-gray-600" id="previewCompanyName">Your Company Name</p>
+                                <p class="text-sm text-gray-600" id="previewCompanyAddress">123 Business Street\nCity,
+                                    State ZIP</p>
+                                <p class="text-sm text-gray-600" id="previewCompanyEmail">info@yourcompany.com</p>
+                                <p class="text-sm text-gray-600" id="previewCompanyPhone">(123) 456-7890</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-700">Billed To:</p>
+                                <p class="text-sm text-gray-600" id="previewClientName">Client Name</p>
+                                <p class="text-sm text-gray-600" id="previewClientAddress">123 Client St, City</p>
+                                <p class="text-sm text-gray-600" id="previewClientEmail">client@email.com</p>
+                                <p class="text-sm text-gray-600" id="previewClientPhone">(555) 123-4567</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Invoice Date:</p>
+                                <p class="text-sm text-gray-600" id="previewInvoiceDate">Jul 12, 2023</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Due Date:</p>
+                                <p class="text-sm text-gray-600" id="previewDueDate">Jul 19, 2023</p>
+                            </div>
+                        </div>
+
+                        <table class="min-w-full mb-8">
+                            <thead>
+                                <tr class="border-b border-gray-200">
+                                    <th class="py-2 text-left text-sm font-medium text-gray-600">Description</th>
+                                    <th class="py-2 text-right text-sm font-medium text-gray-600">Qty</th>
+                                    <th class="py-2 text-right text-sm font-medium text-gray-600">Rate</th>
+                                    <th class="py-2 text-right text-sm font-medium text-gray-600">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="previewItems">
+                                <tr>
+                                    <td colspan="4" class="py-4 text-center text-sm text-gray-500">No items added yet
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="border-t border-gray-200">
+                                    <td colspan="3" class="py-2 text-right text-sm font-medium text-gray-700">Subtotal
+                                    </td>
+                                    <td class="py-2 text-right text-sm text-gray-600" id="previewSubtotal">$0.00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="py-2 text-right text-sm font-medium text-gray-700">Tax (10%)
+                                    </td>
+                                    <td class="py-2 text-right text-sm text-gray-600" id="previewTax">$0.00</td>
+                                </tr>
+                                <tr class="border-t border-gray-300">
+                                    <td colspan="3" class="py-2 text-right text-sm font-bold text-gray-800">Total</td>
+                                    <td class="py-2 text-right text-sm font-bold text-gray-800" id="previewTotal">$0.00
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <div class="text-sm text-gray-600 space-y-2">
+                            <p class="font-medium text-gray-700">Notes:</p>
+                            <p id="previewNotes">Thank you for your business!</p>
+                            <p class="font-medium text-gray-700 mt-4">Terms:</p>
+                            <p id="previewTerms">Payment due within 7 days. Late fees may apply.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 no-print">
+                        <button id="downloadPdfBtn"
+                            class="w-full px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                            Download PDF
+                        </button>
+                        <button id="printBtn"
+                            class="w-full mt-3 px-6 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors">
+                            Print Invoice
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Current date for date inputs
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('invoiceDate').value = formattedDate;
+
+            // Set due date to 7 days from today
+            const dueDate = new Date();
+            dueDate.setDate(today.getDate() + 7);
+            document.getElementById('dueDate').value = dueDate.toISOString().split('T')[0];
+
+            // Invoice number with random digits
+            document.getElementById('invoiceNumber').value = `INV-${Math.floor(1000 + Math.random() * 9000)}`;
+
+            // Add item button
+            document.getElementById('addItemBtn').addEventListener('click', addInvoiceItem);
+
+            // Initial item
+            addInvoiceItem();
+
+            // Generate preview button
+            document.getElementById('generatePreviewBtn').addEventListener('click', generatePreview);
+
+            // Clear form button
+            document.getElementById('clearFormBtn').addEventListener('click', clearForm);
+
+            // Print button
+            document.getElementById('printBtn').addEventListener('click', function () {
+                window.print();
+            });
+
+            // Functions
+            function addInvoiceItem() {
+                const itemsContainer = document.getElementById('invoiceItems');
+                const itemIndex = itemsContainer.children.length;
+
+                const itemRow = document.createElement('tr');
+                itemRow.className = 'item-row hover:bg-gray-50';
+                itemRow.id = `item-${itemIndex}`;
+                itemRow.innerHTML = `
+          <td class="px-3 py-4 whitespace-nowrap">
+            <input type="text" class="item-desc w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Description">
+          </td>
+          <td class="px-3 py-4 whitespace-nowrap">
+            <input type="number" min="1" value="1" class="item-qty w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
+          </td>
+          <td class="px-3 py-4 whitespace-nowrap">
+            <input type="number" min="0" step="0.01" value="0.00" class="item-rate w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
+          </td>
+          <td class="px-3 py-4 whitespace-nowrap text-right">
+            <span class="item-amount">$0.00</span>
+          </td>
+          <td class="px-3 py-4 whitespace-nowrap">
+            <button class="remove-item px-2 py-1 text-red-500 opacity-0 hover:text-red-700 transition-opacity" onclick="removeItem(${itemIndex})">
+              ×
+            </button>
+          </td>
+        `;
+
+                itemsContainer.appendChild(itemRow);
+
+                // Add event listeners to qty and rate inputs
+                const qtyInput = itemRow.querySelector('.item-qty');
+                const rateInput = itemRow.querySelector('.item-rate');
+
+                const calculateItemAmount = () => {
+                    const qty = parseFloat(qtyInput.value) || 0;
+                    const rate = parseFloat(rateInput.value) || 0;
+                    const amount = qty * rate;
+                    itemRow.querySelector('.item-amount').textContent = `$${amount.toFixed(2)}`;
+                };
+
+                qtyInput.addEventListener('input', calculateItemAmount);
+                rateInput.addEventListener('input', calculateItemAmount);
+            }
+
+            function removeItem(index) {
+                const itemRow = document.getElementById(`item-${index}`);
+                if (itemRow) {
+                    itemRow.remove();
+                }
+            }
+
+            window.removeItem = removeItem;
+
+            function generatePreview() {
+                // Company info
+                document.getElementById('previewCompanyName').textContent = document.getElementById('companyName').value;
+                const companyAddressLines = document.getElementById('companyAddress').value.split('\n');
+                document.getElementById('previewCompanyAddress').innerHTML = companyAddressLines.join('<br>');
+                document.getElementById('previewCompanyEmail').textContent = document.getElementById('companyEmail').value;
+                document.getElementById('previewCompanyPhone').textContent = document.getElementById('companyPhone').value;
+
+                // Client info
+                document.getElementById('previewClientName').textContent = document.getElementById('clientName').value || 'Client Name';
+                document.getElementById('previewClientEmail').textContent = document.getElementById('clientEmail').value || 'client@email.com';
+                document.getElementById('previewClientAddress').textContent = document.getElementById('clientAddress').value || '123 Client St, City';
+                document.getElementById('previewClientPhone').textContent = document.getElementById('clientPhone').value || '(555) 123-4567';
+
+                // Invoice details
+                document.getElementById('previewInvoiceNumber').textContent = document.getElementById('invoiceNumber').value || '#INV-0001';
+
+                const invoiceDate = document.getElementById('invoiceDate').value;
+                document.getElementById('previewInvoiceDate').textContent = invoiceDate ? formatDate(invoiceDate) : 'Jul 12, 2023';
+
+                const dueDate = document.getElementById('dueDate').value;
+                document.getElementById('previewDueDate').textContent = dueDate ? formatDate(dueDate) : 'Jul 19, 2023';
+
+                // Invoice items
+                const previewItemsContainer = document.getElementById('previewItems');
+                previewItemsContainer.innerHTML = '';
+
+                const itemRows = document.querySelectorAll('#invoiceItems tr');
+                let subtotal = 0;
+
+                if (itemRows.length === 0) {
+                    previewItemsContainer.innerHTML = `
+            <tr>
+              <td colspan="4" class="py-4 text-center text-sm text-gray-500">No items added yet</td>
+            </tr>
+          `;
+                } else {
+                    itemRows.forEach(row => {
+                        const desc = row.querySelector('.item-desc').value || 'Item Description';
+                        const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                        const rate = parseFloat(row.querySelector('.item-rate').value) || 0;
+                        const amount = qty * rate;
+                        subtotal += amount;
+
+                        const itemRow = document.createElement('tr');
+                        itemRow.className = 'border-b border-gray-100';
+                        itemRow.innerHTML = `
+              <td class="py-3 text-sm">${desc}</td>
+              <td class="py-3 text-sm text-right">${qty}</td>
+              <td class="py-3 text-sm text-right">$${rate.toFixed(2)}</td>
+              <td class="py-3 text-sm text-right">$${amount.toFixed(2)}</td>
+            `;
+                        previewItemsContainer.appendChild(itemRow);
+                    });
+                }
+
+                // Calculate totals
+                const tax = subtotal * 0.10; // 10% tax for example
+                const total = subtotal + tax;
+
+                document.getElementById('previewSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+                document.getElementById('previewTax').textContent = `$${tax.toFixed(2)}`;
+                document.getElementById('previewTotal').textContent = `$${total.toFixed(2)}`;
+
+                // Notes & Terms
+                document.getElementById('previewNotes').textContent = document.getElementById('notes').value || 'Thank you for your business!';
+                document.getElementById('previewTerms').textContent = document.getElementById('terms').value || 'Payment due within 7 days. Late fees may apply.';
+            }
+
+            function formatDate(dateString) {
+                const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                return new Date(dateString).toLocaleDateString('en-US', options);
+            }
+
+            function clearForm() {
+                if (confirm('Are you sure you want to clear the entire form?')) {
+                    // Reset all form inputs
+                    document.getElementById('companyName').value = 'Your Company Name';
+                    document.getElementById('companyAddress').value = '123 Business Street\nCity, State ZIP';
+                    document.getElementById('companyEmail').value = 'info@yourcompany.com';
+                    document.getElementById('companyPhone').value = '(123) 456-7890';
+                    document.getElementById('clientName').value = '';
+                    document.getElementById('clientEmail').value = '';
+                    document.getElementById('clientAddress').value = '';
+                    document.getElementById('clientPhone').value = '';
+
+                    document.getElementById('invoiceNumber').value = `INV-${Math.floor(1000 + Math.random() * 9000)}`;
+                    document.getElementById('invoiceDate').value = new Date().toISOString().split('T')[0];
+
+                    const dueDate = new Date();
+                    dueDate.setDate(dueDate.getDate() + 7);
+                    document.getElementById('dueDate').value = dueDate.toISOString().split('T')[0];
+
+                    document.getElementById('notes').value = '';
+                    document.getElementById('terms').value = '';
+
+                    // Clear items
+                    document.getElementById('invoiceItems').innerHTML = '';
+                    addInvoiceItem();
+
+                    // Clear preview
+                    document.getElementById('previewItems').innerHTML = `
+            <tr>
+              <td colspan="4" class="py-4 text-center text-sm text-gray-500">No items added yet</td>
+            </tr>
+          `;
+                    document.getElementById('previewSubtotal').textContent = '$0.00';
+                    document.getElementById('previewTax').textContent = '$0.00';
+                    document.getElementById('previewTotal').textContent = '$0.00';
+                }
+            }
+
+            // PDF download functionality would typically require a server-side component
+            document.getElementById('downloadPdfBtn').addEventListener('click', function () {
+                alert('PDF generation would require server-side processing. This is just a preview in the browser.');
+            });
+
+            // Template save functionality
+            document.getElementById('saveTemplateBtn').addEventListener('click', function () {
+                const templateName = prompt('Enter a name for this template:');
+                if (templateName) {
+                    alert(`Template "${templateName}" saved (this would be connected to a database in a real app).`);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
